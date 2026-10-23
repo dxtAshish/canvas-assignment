@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found · Dashboard Builder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/src/styles/base.css">
+</head>
+<body class="error-page">
+<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+<header class="navbar">
+  <a class="brand" href="/dashboards">
+    <img src="/favicon.svg" alt="" width="28" height="28">
+    <span>Dashboard Builder</span>
+  </a>
+  <div class="navbar__user" data-navbar-user hidden>
+    <span class="navbar__name" data-user-name></span>
+    <button type="button" class="btn btn--ghost btn--sm" data-action="logout">Sign out</button>
+  </div>
+</header>
+
+<main class="error-state">
+  <p class="error-state__code">404</p>
+  <h1>Page not found</h1>
+  <p class="muted">The page you are looking for does not exist or was moved.</p>
+  <a class="btn btn--primary" href="/dashboards">Back to my dashboards</a>
+</main>
+
+<script type="module" src="/src/pages/notFound.page.js"></script>
+</body>
+</html>

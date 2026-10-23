@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Builder · Dashboard Builder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/src/styles/base.css">
+  <link rel="stylesheet" href="/src/styles/builder.css">
+</head>
+<body class="builder-page">
+<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+<div id="builder-root" class="builder">
+
+  <header class="topbar">
+    <div class="topbar__left">
+      <a class="btn btn--ghost btn--icon" href="/dashboards" title="Back to dashboards" aria-label="Back to dashboards">&larr;</a>
+      <button type="button" class="btn btn--ghost btn--icon only-mobile" data-action="toggle-palette" aria-label="Show elements panel" title="Elements">&#43;</button>
+      <input id="dashboard-name" class="topbar__name" type="text" maxlength="100" aria-label="Dashboard name" disabled>
+      <span id="save-status" class="save-status" data-state="idle" aria-live="polite"></span>
+    </div>
+
+    <div id="text-toolbar" class="text-toolbar" role="toolbar" aria-label="Text formatting" hidden>
+      <button type="button" class="tb-btn" data-cmd="bold" title="Bold (Ctrl+B)" aria-label="Bold"><b>B</b></button>
+      <button type="button" class="tb-btn" data-cmd="italic" title="Italic (Ctrl+I)" aria-label="Italic"><i>I</i></button>
+      <button type="button" class="tb-btn" data-cmd="underline" title="Underline (Ctrl+U)" aria-label="Underline"><u>U</u></button>
+      <select class="tb-select" data-cmd="fontSize" title="Font size" aria-label="Font size">
+        <option value="">Size</option>
+        <option value="10">10 px</option>
+        <option value="12">12 px</option>
+        <option value="14">14 px</option>
+        <option value="16">16 px</option>
+        <option value="18">18 px</option>
+        <option value="20">20 px</option>
+        <option value="24">24 px</option>
+        <option value="28">28 px</option>
+        <option value="32">32 px</option>
+        <option value="40">40 px</option>
+        <option value="48">48 px</option>
+        <option value="64">64 px</option>
+      </select>
+      <input type="color" class="tb-color" data-cmd="foreColor" title="Text color" aria-label="Text color" value="#1f2937">
+      <button type="button" class="tb-btn" data-cmd="insertUnorderedList" title="Bullet list" aria-label="Bullet list">&#8226;&#8801;</button>
+      <button type="button" class="tb-btn" data-cmd="justifyLeft" title="Align left" aria-label="Align left">&#8676;</button>
+      <button type="button" class="tb-btn" data-cmd="justifyCenter" title="Align center" aria-label="Align center">&#8596;</button>
+      <button type="button" class="tb-btn" data-cmd="removeFormat" title="Clear formatting" aria-label="Clear formatting">&#10005;</button>
+    </div>
+
+    <div class="topbar__right">
+      <button type="button" class="btn btn--ghost btn--icon hide-xs" data-action="undo" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>&#8630;</button>
+      <button type="button" class="btn btn--ghost btn--icon hide-xs" data-action="redo" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>&#8631;</button>
+      <label class="toggle hide-mobile" title="Snap positions to a 10px grid">
+        <input type="checkbox" data-action="toggle-snap" checked> Snap
+      </label>
+      <button type="button" class="btn btn--ghost" data-action="toggle-preview" aria-pressed="false">Preview</button>
+      <button type="button" class="btn btn--primary" data-action="save" disabled>Save</button>
+      <button type="button" class="btn btn--ghost btn--icon only-mobile" data-action="toggle-inspector" aria-label="Show properties panel" title="Properties">&#9881;</button>
+    </div>
+  </header>
+
+  <aside id="palette" class="panel panel--left" aria-label="Add elements">
+    <h2 class="panel__title">Add to dashboard</h2>
+    <p class="panel__hint">Click to add, or drag onto a section.</p>
+    <div class="palette-list">
+      <button type="button" class="palette-item" draggable="true" data-add="section">
+        <span class="palette-item__icon" aria-hidden="true">&#9638;</span><span>Section</span>
+      </button>
+      <button type="button" class="palette-item" draggable="true" data-add="text">
+        <span class="palette-item__icon" aria-hidden="true">T</span><span>Text</span>
+      </button>
+      <button type="button" class="palette-item" draggable="true" data-add="image">
+        <span class="palette-item__icon" aria-hidden="true">&#9635;</span><span>Image</span>
+      </button>
+      <button type="button" class="palette-item" draggable="true" data-add="chart-bar">
+        <span class="palette-item__icon" aria-hidden="true">&#9609;</span><span>Bar chart</span>
+      </button>
+      <button type="button" class="palette-item" draggable="true" data-add="chart-line">
+        <span class="palette-item__icon" aria-hidden="true">&#8599;</span><span>Line chart</span>
+      </button>
+    </div>
+
+    <h2 class="panel__title">Shortcuts</h2>
+    <dl class="shortcuts">
+      <dt>Double-click</dt><dd>Edit text</dd>
+      <dt>Arrows</dt><dd>Nudge (Shift = 10px)</dd>
+      <dt>Del</dt><dd>Delete selection</dd>
+      <dt>Ctrl+D</dt><dd>Duplicate</dd>
+      <dt>Ctrl+Z / Ctrl+Y</dt><dd>Undo / Redo</dd>
+      <dt>Ctrl+S</dt><dd>Save</dd>
+      <dt>Esc</dt><dd>Deselect</dd>
+    </dl>
+  </aside>
+
+  <main id="stage" class="stage" aria-label="Dashboard canvas">
+    <div id="stage-loading" class="stage__overlay">
+      <span class="spinner spinner--lg" aria-hidden="true"></span>
+      <p>Loading dashboard…</p>
+    </div>
+    <div id="canvas-scaler" class="canvas-scaler">
+      <div id="canvas" class="canvas" tabindex="-1"></div>
+    </div>
+  </main>
+
+  <aside id="inspector" class="panel panel--right" aria-label="Properties"></aside>
+  <div class="panel-backdrop" data-action="close-panels" hidden></div>
+</div>
+<input id="image-input" type="file" accept="image/png,image/jpeg,image/gif,image/webp" hidden>
+
+<script type="module" src="/src/pages/builder.page.js"></script>
+</body>
+</html>

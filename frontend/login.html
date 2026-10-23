@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Dashboard Builder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/src/styles/base.css">
+</head>
+<body class="auth-page">
+<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+<main class="auth-card">
+  <div class="auth-card__brand">
+    <img src="/favicon.svg" alt="" width="40" height="40">
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to build and arrange your dashboards.</p>
+  </div>
+
+  <form id="login-form" class="form" novalidate>
+    <div class="alert alert--error" data-form-error hidden></div>
+
+    <div class="field">
+      <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" autofocus>
+      <p class="field__error" data-error-for="email"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="72">
+      <p class="field__error" data-error-for="password"></p>
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--block">Sign in</button>
+  </form>
+
+  <p class="auth-card__footer">No account yet? <a href="/register">Create one</a></p>
+  <p class="auth-card__hint">Demo: <code>demo@example.com</code> / <code>Demo@1234</code></p>
+</main>
+
+<script type="module" src="/src/pages/login.page.js"></script>
+</body>
+</html>

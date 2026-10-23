@@ -1,0 +1,45 @@
+# Local MySQL (and optionally the full app) for development.
+#   docker compose up -d mysql          -> database only (run the app with `npm run dev`)
+#   docker compose up --build           -> database + app on http://localhost:5000
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: dashboard-builder-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    container_name: dashboard-builder-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: rootpass
+      DB_NAME: dashboard_builder
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-0123456789abcdef}
+      COOKIE_SECURE: "false"
+    ports:
+      - "5000:5000"
+    volumes:
+      - uploads:/app/backend/uploads
+    # Schema + sample data are applied idempotently on every start.
+    command: sh -c "node scripts/db-setup.js && node src/server.js"
+
+volumes:
+  mysql-data:
+  uploads:
